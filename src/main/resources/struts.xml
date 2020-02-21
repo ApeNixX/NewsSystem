@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <!-- Struts。xml的配置文件 -->
+    <!-- 所有匹配*.action的请求都由struts2处理 -->
+    <constant name="struts.action.extension" value="action,," />
+    <!-- 是否启用开发模式 -->
+    <constant name="struts.devMode" value="true" />
+
+    <package name="default" extends="struts-default" namespace="/">
+
+        <!--注册拦截器-->
+        <interceptors>
+            <interceptor name="loginInterceptor" class="com.sise.news.Interceptor.Interceptor">
+                <!--设置不拦截方法-->
+                <param name="excludeMethods">index,loginPage,frontPage,frontNewsDetail,frontFindNewsByCategory
+                ,frontFindNewsByTitle,frontFindNewsByTime
+                </param>
+            </interceptor>
+        </interceptors>
+
+        <!--首页设置-->
+        <default-action-ref name="frontPage" />
+
+
+        <!-- 如果不指定method，那么默认方法是execute-->
+        <!--name:Action类的名字，具有唯一性，页面上通过name来访问Action类 -->
+
+        <!--后台-->
+        <action name="categoryList" class="com.sise.news.action.AdminAction" method="categoryList">
+            <!-- 配置结果集 :name属性的值一定要与execute方法的返回值一致-->
+            <result name="categorylist">/WEB-INF/category_list.jsp</result>
+
+            <!--引用自定义拦截器-->
+            <interceptor-ref name="loginInterceptor"></interceptor-ref>
+            <interceptor-ref name="defaultStack"></interceptor-ref>
+            <!--要为拦截成功配置返回值-->
+            <result name="input">/WEB-INF/login.jsp</result>
+        </action>
+        <action name="categoryAdd" class="com.sise.news.action.AdminAction" method="categoryAdd">
+            <result name="success" type="redirectAction">
+                <param name="actionName">categoryList</param>
+            </result>
+            <result name="fail"  type="redirectAction">
+                <param name="actionName">categoryAddPage</param>
+            </result>
+            <!--引用自定义拦截器-->
+            <interceptor-ref name="loginInterceptor"></interceptor-ref>
+            <interceptor-ref name="defaultStack"></interceptor-ref>
+            <!--要为拦截成功配置返回值-->
+            <result name="input">/WEB-INF/login.jsp</result>
+        </action>
+
+        <action name="categoryAddPage" class="com.sise.news.action.AdminAction" method="categoryAddPage">
+            <result name="categoryAddPage">/WEB-INF/addCategory.jsp</result>
+            <!--引用自定义拦截器-->
+            <interceptor-ref name="loginInterceptor"></interceptor-ref>
+            <interceptor-ref name="defaultStack"></interceptor-ref>
+            <!--要为拦截成功配置返回值-->
+            <result name="input">/WEB-INF/login.jsp</result>
+        </action>
+
+        <action name="categoryDelete" class="com.sise.news.action.AdminAction" method="categoryDelete">
+            <result name="success" type="redirectAction">
+                <param name="actionName">categoryList</param>
+            </result>
+            <!--引用自定义拦截器-->
+            <interceptor-ref name="loginInterceptor"></interceptor-ref>
+            <interceptor-ref name="defaultStack"></interceptor-ref>
+            <!--要为拦截成功配置返回值-->
+            <result name="input">/WEB-INF/login.jsp</result>
+        </action>
+
+        <action name="categoryUpdate" class="com.sise.news.action.AdminAction" method="categoryUpdate">
+            <result name="update">/WEB-INF/updateCategory.jsp</result>
+            <!--引用自定义拦截器-->
+            <interceptor-ref name="loginInterceptor"></interceptor-ref>
+            <interceptor-ref name="defaultStack"></interceptor-ref>
+            <!--要为拦截成功配置返回值-->
+            <result name="input">/WEB-INF/login.jsp</result>
+        </action>
+
+        <action name="categoryUpdated" class="com.sise.news.action.AdminAction" method="categoryUpdated">
+            <result name="success" type="redirectAction">
+                <param name="actionName">categoryList</param>
+            </result>
+            <result name="fail" type="redirectAction">
+                <param name="actionName">categoryList</param>
+            </result>
+            <!--引用自定义拦截器-->
+            <interceptor-ref name="loginInterceptor"></interceptor-ref>
+            <interceptor-ref name="defaultStack"></interceptor-ref>
+            <!--要为拦截成功配置返回值-->
+            <result name="input">/WEB-INF/login.jsp</result>
+        </action>
+
+        <action name="newsList" class="com.sise.news.action.AdminAction" method="newsList">
+            <result name="newslist">/WEB-INF/news_list.jsp</result>
+            <!--引用自定义拦截器-->
+            <interceptor-ref name="loginInterceptor"></interceptor-ref>
+            <interceptor-ref name="defaultStack"></interceptor-ref>
+            <!--要为拦截成功配置返回值-->
+            <result name="input">/WEB-INF/login.jsp</result>
+        </action>
+
+        <action name="listNewsPart" class="com.sise.news.action.AdminAction" method="listNewsPart">
+            <result name="newslistpart">/WEB-INF/news_findList.jsp</result>
+            <!--引用自定义拦截器-->
+            <interceptor-ref name="loginInterceptor"></interceptor-ref>
+            <interceptor-ref name="defaultStack"></interceptor-ref>
+            <!--要为拦截成功配置返回值-->
+            <result name="input">/WEB-INF/login.jsp</result>
+        </action>
+
+        <action name="newsUpdate" class="com.sise.news.action.AdminAction" method="newsUpdate">
+            <result name="updates">/WEB-INF/updateNews.jsp</result>
+            <!--引用自定义拦截器-->
+            <interceptor-ref name="loginInterceptor"></interceptor-ref>
+            <interceptor-ref name="defaultStack"></interceptor-ref>
+            <!--要为拦截成功配置返回值-->
+            <result name="input">/WEB-INF/login.jsp</result>
+        </action>
+
+        <action name="newsUpdated" class="com.sise.news.action.AdminAction" method="newsUpdated">
+            <result name="success" type="redirectAction">
+                <param name="actionName">newsList</param>
+            </result>
+            <!--引用自定义拦截器-->
+            <interceptor-ref name="loginInterceptor"></interceptor-ref>
+            <interceptor-ref name="defaultStack"></interceptor-ref>
+            <!--要为拦截成功配置返回值-->
+            <result name="input">/WEB-INF/login.jsp</result>
+        </action>
+
+        <action name="newsDelete" class="com.sise.news.action.AdminAction" method="newsDelete">
+            <result name="success" type="redirectAction">
+                <param name="actionName">newsList</param>
+            </result>
+            <!--引用自定义拦截器-->
+            <interceptor-ref name="loginInterceptor"></interceptor-ref>
+            <interceptor-ref name="defaultStack"></interceptor-ref>
+            <!--要为拦截成功配置返回值-->
+            <result name="input">/WEB-INF/login.jsp</result>
+        </action>
+
+        <action name="newsAdd" class="com.sise.news.action.AdminAction" method="newsAdd">
+            <result name="add">/WEB-INF/addNews.jsp</result>
+            <!--引用自定义拦截器-->
+            <interceptor-ref name="loginInterceptor"></interceptor-ref>
+            <interceptor-ref name="defaultStack"></interceptor-ref>
+            <!--要为拦截成功配置返回值-->
+            <result name="input">/WEB-INF/login.jsp</result>
+        </action>
+
+        <action name="newsAdded" class="com.sise.news.action.AdminAction" method="newsAdded">
+            <result name="success" type="redirectAction">
+                <param name="actionName">newsList</param>
+            </result>
+            <!--引用自定义拦截器-->
+            <interceptor-ref name="loginInterceptor"></interceptor-ref>
+            <interceptor-ref name="defaultStack"></interceptor-ref>
+            <!--要为拦截成功配置返回值-->
+            <result name="input">/WEB-INF/login.jsp</result>
+        </action>
+
+
+
+        <action name="index" class="com.sise.news.action.AdminAction" method="index">
+            <result name="index">/WEB-INF/index.jsp</result>
+        </action>
+        <!--登录-->
+        <action name="loginPage" class="com.sise.news.action.UserAction" method="loginPage">
+            <result name="loginPage">/WEB-INF/login.jsp</result>
+        </action>
+
+        <action name="login" class="com.sise.news.action.UserAction" method="login">
+            <result name="login">/WEB-INF/login.jsp</result>
+            <result name="admin" type="redirectAction">
+                <param name="actionName">index</param>
+            </result>
+        </action>
+
+        <action name="logout" class="com.sise.news.action.UserAction" method="logout">
+            <result name="login">/WEB-INF/login.jsp</result>
+        </action>
+        <!--前台-->
+        <action name="frontPage" class="com.sise.news.action.FrontAction" method="frontPage">
+            <result name="front">/WEB-INF/front.jsp</result>
+        </action>
+
+        <action name="frontNewsDetail" class="com.sise.news.action.FrontAction" method="frontNewsDetail">
+            <result name="frontNewsDetail">/WEB-INF/newsDetail.jsp</result>
+        </action>
+
+        <action name="frontFindNewsByCategory" class="com.sise.news.action.FrontAction" method="frontFindNewsByCategory">
+            <result name="part">/WEB-INF/front_findNews.jsp</result>
+        </action>
+
+        <action name="frontFindNewsByTitle" class="com.sise.news.action.FrontAction" method="frontFindNewsByTitle">
+            <result name="part">/WEB-INF/front_findNews.jsp</result>
+            <result name="front" type="redirectAction">
+                <param name="actionName">frontPage</param>
+            </result>
+        </action>
+
+        <action name="frontFindNewsByTime" class="com.sise.news.action.FrontAction" method="frontFindNewsByTime">
+            <result name="part">/WEB-INF/front_findNews.jsp</result>
+            <result name="front" type="redirectAction">
+                <param name="actionName">frontPage</param>
+            </result>
+        </action>
+    </package>
+</struts>
